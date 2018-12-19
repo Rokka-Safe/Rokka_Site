@@ -40,9 +40,8 @@ def create_user():
 @app.route('/user/<int:user_id>', methods=['GET', 'DELETE'])
 def me(user_id):
     if request.method == 'GET':
-        current_user = User.query.filter_by(id=user_id).first()
-        return "Hello {me} !".format(
-            me=current_user.first_name)
+        current_user = User.query.filter_by(id=user_id).first_or_404()
+        return render_template('profile.html', current_user=current_user)
     elif request.method == 'DELETE':
         return 'Account removed'
 
