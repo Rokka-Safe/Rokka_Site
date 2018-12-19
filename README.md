@@ -15,3 +15,42 @@ python -m flask run
 ```
 
 check server at **localhost:5000**
+
+### Sqlite
+
+In terminal :
+
+```
+sudo apt-get install sqlite3 libsqlite3-dev -y
+sqlite -version
+sqlite3 rokka.db
+```
+
+in sqlite console:
+
+```
+.databases
+```
+
+*This will output the path to the database*
+
+then in file add :
+
+``` python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db'
+db = SQLAlchemy(app)
+
+```
+
+in python console:
+
+```
+from app import db
+db.create_all()
+```
+
+*This will create the tables in your database*

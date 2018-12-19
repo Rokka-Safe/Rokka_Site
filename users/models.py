@@ -1,16 +1,19 @@
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db'
+db = SQLAlchemy(app)
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255))
     password = db.Column(db.String(255)) # encryption !! RGPD !!!
     activated = db.Column(db.Boolean())
-    activated_at = db.Column(db.Datetime())
+    activated_at = db.Column(db.DateTime())
 
     def __init__(self, id, first_name, last_name, email, password, activated, activated_at):
         self.id = id
@@ -28,12 +31,13 @@ class User(db.Model):
         )
 
 
-class API_Key(db.Model):
+class APIKey(db.Model):
+    __tablename__ = 'api_keys'
     id = db.Column(db.Integer, primary_key=True)
     tmp_code = db.Column(db.Integer)
     key = db.Column(db.String(15))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('users', lazy='joined'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref=db.backref('id', lazy='joined'))
 
     def __init__(self, id, tmp_code, key, user_id):
         self.id = id
