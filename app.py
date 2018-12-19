@@ -24,29 +24,27 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/user', methods=['GET', 'POST'])
-def user():
-    if request.method == 'GET':
-        return 'foo'
-    elif request.method == 'POST':
-        new_user = User(
-            first_name=request.form["first_name"],
-            last_name=request.form["last_name"],
-            email=request.form["email"],
-            password=request.form["password"]
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return 'You have successfully created your account !'
+@app.route('/user', methods=['POST'])
+def create_user():
+    new_user = User(
+        first_name=request.form["first_name"],
+        last_name=request.form["last_name"],
+        email=request.form["email"],
+        password=request.form["password"]
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return 'You have successfully created your account !'
 
 
-@app.route('/me/{user_id}', methods=['GET', 'DELETE'])
+@app.route('/user/<int:user_id>', methods=['GET', 'DELETE'])
 def me(user_id):
     if request.method == 'GET':
-        print(user_id)
-        return render_template('me.html')
+        current_user = User.query.filter_by(id=user_id).first()
+        return "Hello {me} !".format(
+            me=current_user.first_name)
     elif request.method == 'DELETE':
-        return 'delete me'
+        return 'Account removed'
 
 #
 #
