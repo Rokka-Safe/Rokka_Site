@@ -2,6 +2,7 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from users.models import db
+from users.models import User
 
 import requests
 
@@ -28,7 +29,15 @@ def user():
     if request.method == 'GET':
         return 'foo'
     elif request.method == 'POST':
-        return 'bar'
+        new_user = User(
+            first_name=request.form["first_name"],
+            last_name=request.form["last_name"],
+            email=request.form["email"],
+            password=request.form["password"]
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return 'You have successfully created your account !'
 
 
 @app.route('/me/{user_id}', methods=['GET', 'DELETE'])
