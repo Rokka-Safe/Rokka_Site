@@ -1,16 +1,16 @@
 #!flask/bin/python
 from flask import Flask, request, render_template
-from flask_sqlalchemy import SQLAlchemy
-from users.models import db
-from users.models import User
 from users.controllers import UserController
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from users.models import db
+import os
 
-import requests
+load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 db.init_app(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
 
 #
@@ -22,7 +22,6 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
-    print(requests)
     return render_template('home.html')
 
 

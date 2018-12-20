@@ -2,7 +2,10 @@
 # main = Blueprint('users', __name__)
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 from models import User, db
+
+load_dotenv()
 
 app = Flask(__name__)
 db.init_app(app)

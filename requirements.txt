@@ -2,3 +2,4 @@ requests
 setuptools
 SQLAlchemy
 flask-sqlalchemy
+python-dotenv
