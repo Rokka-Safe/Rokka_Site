@@ -1,9 +1,8 @@
-# from flask import Blueprint, render_template
-# main = Blueprint('users', __name__)
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from models import User, db
+import random
 
 load_dotenv()
 
@@ -36,3 +35,23 @@ class UserController:
     def show(user_id):
         current_user = User.query.filter_by(id=user_id).first_or_404()
         return render_template('profile.html', current_user=current_user)
+
+class BadgeController:
+
+    @staticmethod
+    def register_badge(pid, user_id):
+        random_tmp = str(random.randint(0, 9))
+        for x in range(5):
+            random_tmp += str(random.randint(0, 9))
+        new_badge = APIKey(
+            tmp_code=random_tmp,
+            key=pid,
+            user_id=user_id
+        )
+        db.session.add(new_badge)
+        db.session.commit()
+
+    @staticmethod
+    def clear_badge(req):
+        # TODO : the whole method
+        return

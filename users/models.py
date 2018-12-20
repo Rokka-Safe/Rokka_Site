@@ -33,10 +33,10 @@ class User(db.Model):
 
 
 class APIKey(db.Model):
-    __tablename__ = 'api_keys'
+    __tablename__ = 'raspberries'
     id = db.Column(db.Integer, primary_key=True)
     tmp_code = db.Column(db.Integer)
-    key = db.Column(db.String(15))
+    key = db.Column(db.String(25))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('users.id', lazy='joined'))
 
