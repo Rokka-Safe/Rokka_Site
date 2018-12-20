@@ -3,6 +3,7 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from users.models import db
 from users.models import User
+from users.controllers import UserController
 
 import requests
 
@@ -18,6 +19,7 @@ db = SQLAlchemy(app)
 #
 #
 
+
 @app.route('/')
 def home():
     print(requests)
@@ -26,24 +28,23 @@ def home():
 
 @app.route('/user', methods=['POST'])
 def create_user():
-    new_user = User(
-        first_name=request.form["first_name"],
-        last_name=request.form["last_name"],
-        email=request.form["email"],
-        password=request.form["password"]
-    )
-    db.session.add(new_user)
-    db.session.commit()
-    return 'You have successfully created your account !'
+    try:
+        UserController.create(request.form)
+        return 'You have successfully created your account !'
+    except:
+        return render_template('404.html')
 
 
 @app.route('/user/<int:user_id>', methods=['GET', 'DELETE'])
 def me(user_id):
     if request.method == 'GET':
-        current_user = User.query.filter_by(id=user_id).first_or_404()
-        return render_template('profile.html', current_user=current_user)
+        return UserController.show(user_id)
     elif request.method == 'DELETE':
-        return 'Account removed'
+        try:
+            UserController.delete(user_id)
+            return 'Account removed'
+        except:
+            return render_template('404.html')
 
 #
 #

@@ -8,7 +8,7 @@ First of all : install python 2.7
 Then :
 
 ```
-sudo apt-get install pip
+sudo apt-get install python-pip
 pip install flask
 export FLASK_ENV=development
 python -m flask run
