@@ -1,6 +1,6 @@
 #!flask/bin/python
 from flask import Flask, request, render_template
-from users.controllers import UserController
+from users.controllers import UserController, BadgeController
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from users.models import db
@@ -50,3 +50,9 @@ def me(user_id):
 # Raspberry routes
 #
 #
+
+
+@app.route('/api/badge/<string:pid>/<int:user_id>', methods=['GET'])
+def badge(pid, user_id):
+    BadgeController.register_badge(pid, user_id)
+    return 'You have successfully activated your badge !'
