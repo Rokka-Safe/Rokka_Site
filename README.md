@@ -8,8 +8,11 @@ First of all : install python 2.7
 Then :
 
 ```
+git clone https://github.com/Rokka-Safe/Rokka_Site.git
+cd Rokka_Site
 sudo apt-get install pip
-pip install flask
+sudo apt-get install python-setuptools
+pip install -r requirements.txt
 export FLASK_ENV=development
 python -m flask run
 ```
