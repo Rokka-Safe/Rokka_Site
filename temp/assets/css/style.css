@@ -1520,7 +1520,7 @@ Brand Section style
     width:100%;
 }
 .cbrand_item {
-    height: 70px;
+    /*height: 70px;*/
     overflow: hidden;
 }
 .cbrand_item img{
