@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
-from models import User, db
+from models import User, APIKey, db
 import random
 
 load_dotenv()
@@ -13,6 +13,10 @@ db = SQLAlchemy(app)
 
 
 class UserController:
+
+    @staticmethod
+    def signin(req):
+        return req
 
     @staticmethod
     def create(req):
@@ -36,16 +40,17 @@ class UserController:
         current_user = User.query.filter_by(id=user_id).first_or_404()
         return render_template('profile.html', current_user=current_user)
 
+
 class BadgeController:
 
     @staticmethod
-    def register_badge(pid, user_id):
+    def register_badge(key, user_id):
         random_tmp = str(random.randint(0, 9))
         for x in range(5):
             random_tmp += str(random.randint(0, 9))
         new_badge = APIKey(
             tmp_code=random_tmp,
-            key=pid,
+            key=key,
             user_id=user_id
         )
         db.session.add(new_badge)

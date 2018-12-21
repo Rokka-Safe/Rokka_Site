@@ -20,6 +20,11 @@ db = SQLAlchemy(app)
 #
 
 
+@app.route('/signin', methods=['POST'])
+def signin():
+    UserController.signin(request.form)
+    return
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -52,7 +57,7 @@ def me(user_id):
 #
 
 
-@app.route('/api/badge/<string:pid>/<int:user_id>', methods=['GET'])
-def badge(pid, user_id):
-    BadgeController.register_badge(pid, user_id)
+@app.route('/api/badge/<key>/<int:user_id>', methods=['GET'])
+def badge(key, user_id):
+    BadgeController.register_badge(key, user_id)
     return 'You have successfully activated your badge !'
