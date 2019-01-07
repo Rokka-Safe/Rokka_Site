@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
-from models import User, db
+from models import User, APIKey, db
 import random
 
 load_dotenv()
@@ -58,4 +58,4 @@ class BadgeController:
     @staticmethod
     def clear_badge(req):
         # TODO : the whole method
-        return
+        pass
