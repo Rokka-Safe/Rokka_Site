@@ -12,4 +12,4 @@ export FLASK_ENV=development
 python -m flask run
 ```
 
-check server at **localhost:5000**
+q
