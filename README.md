@@ -39,7 +39,7 @@ in sqlite console:
 
 *This will output the path to the database*
 
-then in file add :
+then in app.py file, add the followings to connect db:
 
 ``` python
 from flask import Flask
