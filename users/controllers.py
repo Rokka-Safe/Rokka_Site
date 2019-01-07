@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
-from models import User, APIKey, db
+from models import User, db
 import random
 
 load_dotenv()
@@ -39,7 +39,6 @@ class UserController:
     def show(user_id):
         current_user = User.query.filter_by(id=user_id).first_or_404()
         return render_template('profile.html', current_user=current_user)
-
 
 class BadgeController:
 
