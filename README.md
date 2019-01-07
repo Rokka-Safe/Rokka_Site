@@ -27,7 +27,7 @@ In terminal :
 
 ```
 sudo apt-get install sqlite3 libsqlite3-dev -y
-sqlite -version
+sqlite3 -version
 sqlite3 rokka.db
 ```
 
