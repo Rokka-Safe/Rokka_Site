@@ -28,12 +28,14 @@ class UserController:
         )
         db.session.add(new_user)
         db.session.commit()
+        return 'You have successfully created your account !'
 
     @staticmethod
     def delete(user_id):
         current_user = User.query.filter_by(id=user_id).first_or_404()
         db.session.delete(current_user)
         db.session.commit()
+        return 'Account removed'
 
     @staticmethod
     def show(user_id):
@@ -54,8 +56,12 @@ class BadgeController:
         )
         db.session.add(new_badge)
         db.session.commit()
+        return 'You have successfully registered your badge !'
 
     @staticmethod
-    def clear_badge(req):
-        # TODO : the whole method
-        pass
+    def clear_badge(key, user_id):
+        # TODO : the val remowhole
+        current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
+        db.session.delete(current_badge)
+        db.session.commit()
+        return "You've removed your badge"
