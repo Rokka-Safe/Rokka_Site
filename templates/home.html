@@ -31,6 +31,7 @@
 
         <!--Theme custom css -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
         <!--<link rel="stylesheet" href="assets/css/colors/maron.css">-->
 
         <!--Theme Responsive css-->
@@ -924,7 +925,7 @@
                             <div class="col-md-4">
                                 <div class="blog_item m-top-20">
                                     <div class="blog_item_img">
-                                        <img src="{{ url_for('static', filename='images/background/strong-box-1429334_1920').jpg }}}" alt="" />
+                                        <img src="{{ url_for('static', filename='images/background/strong-box-1429334_1920.jpg') }}}" alt="" />
                                     </div>
                                     <div class="blog_text roomy-40">
                                         <h6>YOU WANT TO PROTECT YOUR DIRTY SECRETS...</h6>
@@ -959,18 +960,17 @@
                             <div class="col-md-4">
                                 <div class="rage_widget">
                                     <div class="widget_head">
-                                        <h3 class="text-white">RAGE</h3>
+                                        <h3 class="text-white">ROKKA</h3>
                                         <div class="separator_small"></div>
                                     </div>
                                     <p>If you have any question, thought, grief, you can send us a message and we will be more than happy to reply  </p>
 
                                     <div class="widget_socail m-top-30">
                                         <ul class="list-inline">
-                                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href=""><i class="fa fa-github"></i></a></li>
                                             <li><a href=""><i class="fa fa-twitter"></i></a></li>
                                             <li><a href=""><i class="fa fa-linkedin"></i></a></li>
-                                            <li><a href=""><i class="fa fa-vimeo"></i></a></li>
-                                            <li><a href=""><i class="fa fa-instagram"></i></a></li>
+                                            <li><a href=""><i class="fa fa-beer"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -1013,28 +1013,111 @@
             <div class="scrollup">
                 <a href="#"><i class="fa fa-chevron-up"></i></a>
             </div><!-- End off scroll up -->
+        </div>
+        <section id="signup">
+            <div class="container">
+                <div class="row main">
+                    <div class="main-login main-center">
+                        <form class="form-horizontal" method="post" action="#">
 
+                            <div class="form-group">
+                                <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+                                    </div>
+                                </div>
+                            </div>
 
-            <footer id="footer" class="footer bg-black">
-                <div class="container">
-                    <div class="row">
-                        <div class="main_footer text-center p-top-40 p-bottom-30">
-                            <p class="wow fadeInRight" data-wow-duration="1s">
-                                Made with
-                                <i class="fa fa-heart"></i>
-                                by
-                                <a target="_blank" href="http://bootstrapthemes.co">Bootstrap Themes</a>
-                                2016. All Rights Reserved
-                            </p>
-                        </div>
+                            <div class="form-group">
+                                <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="username" class="cols-sm-2 control-label">Username</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="cols-sm-2 control-label">Password</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                        <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                        <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                            </div>
+                            <div class="login-register">
+                                <a href="index.php">Login</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </section>
+        <section id="signin">
+            <div class="container">
+                <div class="row main">
+                    <div class="main-login main-center">
+                        <form class="form-horizontal" method="post" action="#">
+                            <div class="form-group">
+                                <label for="username" class="cols-sm-2 control-label">Username</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label for="password" class="cols-sm-2 control-label">Password</label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                        <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group ">
+                                <button type="button" class="btn btn-primary btn-lg btn-block login-button">Login</button>
+                            </div>
+                            <div class="login-register">
+                                <a href="index.php">Create an account</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-
-        </div>
 
         <!-- JS includes -->
 
