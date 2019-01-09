@@ -1,0 +1,166 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>ROKKA | Sign Up</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="favicon.ico">
+
+        <!--Google Font link-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }} ">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonticons.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootsnav.css') }}">
+
+
+        <!--For Plugins external css-->
+        <!--<link rel="stylesheet" href="assets/css/plugins.css" />-->
+
+        <!--Theme custom css -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+
+        <!--<link rel="stylesheet" href="assets/css/colors/maron.css">-->
+
+        <!--Theme Responsive css-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}" />
+
+        <script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+    </head>
+
+    <body>
+
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/logo-rokka-min.png') }}" class="logo logo-display" alt="">
+            </a>
+        </div>
+        <div class="row main">
+
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">Create a account</h1>
+                    <hr />
+                </div>
+            </div>
+            <div class="main-login main-center">
+                <form class="form-horizontal" method="post" action="#">
+
+                    <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="cols-sm-2 control-label">Username</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Password</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                    </div>
+                    <div class="login-register">
+                        <a href="index.php">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- JS includes -->
+
+        <script src="{{ url_for('static', filename='js/vendor/jquery-1.11.2.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/jquery.magnific-popup.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.collapse.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootsnav.js') }}"></script>
+
+
+        <!-- paradise slider js -->
+
+
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyD_tAQD36pKp9v4at5AnpGbvBUsLCOSJx8"></script>
+        <script src="{{ url_for('static', filename='js/gmaps.min.js') }}"></script>
+
+        <script>
+                        function showmap() {
+                            var mapOptions = {
+                                zoom: 8,
+                                scrollwheel: false,
+                                center: new google.maps.LatLng(-34.397, 150.644),
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            };
+                            var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+                            $('.mapheight').css('height', '350');
+                            $('.maps_text h3').hide();
+                        }
+
+        </script>
+
+
+
+
+
+        <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    </body>
+</html>
