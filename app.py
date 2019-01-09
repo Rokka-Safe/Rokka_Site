@@ -33,8 +33,7 @@ def home():
 @app.route('/user', methods=['POST'])
 def create_user():
     try:
-        UserController.create(request.form)
-        return 'You have successfully created your account !'
+        return UserController.create(request.form)
     except:
         return render_template('404.html')
 
@@ -45,8 +44,7 @@ def me(user_id):
         return UserController.show(user_id)
     elif request.method == 'DELETE':
         try:
-            UserController.delete(user_id)
-            return 'Account removed'
+            return UserController.delete(user_id)
         except:
             return render_template('404.html')
 
@@ -57,7 +55,8 @@ def me(user_id):
 #
 
 
-@app.route('/api/badge/<key>/<int:user_id>', methods=['GET'])
+@app.route('/api/badge/<key>/<int:user_id>', methods=['GET', 'DELETE'])
 def badge(key, user_id):
-    BadgeController.register_badge(key, user_id)
-    return 'You have successfully activated your badge !'
+    # HUUUUUUGE ternary lol
+    return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
+

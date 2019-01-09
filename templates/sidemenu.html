@@ -1,0 +1,28 @@
+<!-- Start Side Menu -->
+{% if 0 == 1 %}
+<div class="side">
+    <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+    <div class="widget">
+        <h6 class="title">Authenticated user</h6>
+        <ul class="link">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Logs</a></li>
+            <li><a href="#">My Rokka</a></li>
+            <li><a href="#">Clean card</a></li>
+            <li><a href="#">Log out</a></li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="side">
+    <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+    <div class="widget">
+        <h6 class="title">Anonymous</h6>
+        <ul class="link">
+            <!--TODO: test the route href-->
+            <li><a href="/signup">Sign up</a></li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+<!-- End Side Menu -->
