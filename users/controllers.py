@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from sqlalchemy import delete
 from models import User, APIKey, db
 import random
 
@@ -42,6 +43,7 @@ class UserController:
         current_user = User.query.filter_by(id=user_id).first_or_404()
         return render_template('profile.html', current_user=current_user)
 
+
 class BadgeController:
 
     @staticmethod
@@ -60,8 +62,13 @@ class BadgeController:
 
     @staticmethod
     def clear_badge(key, user_id):
-        # TODO : the val remowhole
         current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
-        db.session.delete(current_badge)
+
+        # TODO: introduce double check before removal
+        print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        print(current_badge)
+        print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        db.execute(delete('api_keys').where())
         db.session.commit()
+
         return "You've removed your badge"

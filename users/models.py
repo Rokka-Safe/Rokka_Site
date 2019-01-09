@@ -46,6 +46,4 @@ class APIKey(db.Model):
         self.user_id = user_id
 
     def __repr__(self):
-        return "You have the following key : {key}".format(
-            key=self.key
-        )
+        return "{key}".format(key=self.key)
