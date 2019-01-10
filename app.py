@@ -25,6 +25,7 @@ def signin():
     UserController.signin(request.form)
     return
 
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -47,6 +48,14 @@ def me(user_id):
             return UserController.delete(user_id)
         except:
             return render_template('404.html')
+
+
+@app.route('/tutorial/<int:step>', methods=['GET'])
+def get_tutorial(step):
+    print('NNNNNNNNNNNNNNNNNSTEPNNNNNNNNNNNNNNNNNNNNNNN')
+    print(step)
+    print('NNNNNNNNNNNNNNNNNSTEPNNNNNNNNNNNNNNNNNNNNNNN')
+    return render_template('tutorial.html', step=step)
 
 #
 #

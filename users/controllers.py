@@ -65,9 +65,7 @@ class BadgeController:
         current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
 
         # TODO: introduce double check before removal
-        print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
         print(current_badge)
-        print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
         db.execute(delete('api_keys').where())
         db.session.commit()
 

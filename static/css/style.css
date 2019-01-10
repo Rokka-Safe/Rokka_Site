@@ -1737,3 +1737,15 @@ Footer Section style
     text-decoration: none;
 
 }
+
+.tuto_content {
+    padding-top: 10%;
+}
+.step_controller {
+    height: 50px;
+    font-size: 2em;
+    color: white;
+    background-color: #e0e0e0;
+    margin: 0 5px 0 5px;
+    width: 24%;
+}
