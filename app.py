@@ -63,7 +63,7 @@ def get_tutorial(step):
 
 @app.route('/api/badge/<key>/<int:user_id>', methods=['GET', 'DELETE'])
 def badge(key, user_id):
-    return "string"
+    return "123"
     # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
 
 
