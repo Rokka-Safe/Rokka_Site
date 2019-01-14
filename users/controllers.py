@@ -1,9 +1,12 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from time import gmtime, strftime
 from dotenv import load_dotenv
 from sqlalchemy import delete
-from models import User, APIKey, db
+from models import User, APIKey, Logs, db
 import random
+import json
+import os
 
 load_dotenv()
 
@@ -48,17 +51,21 @@ class BadgeController:
 
     @staticmethod
     def register_badge(key, user_id):
-        random_tmp = str(random.randint(0, 9))
-        for x in range(5):
-            random_tmp += str(random.randint(0, 9))
-        new_badge = APIKey(
-            tmp_code=random_tmp,
-            key=key,
-            user_id=user_id
-        )
-        db.session.add(new_badge)
-        db.session.commit()
-        return 'You have successfully registered your badge !'
+        BadgeController.write_json_file(key, user_id)
+
+        if BadgeController.write_json_file(key, user_id):
+            random_tmp = str(random.randint(0, 9))
+            for x in range(5):
+                random_tmp += str(random.randint(0, 9))
+
+            new_badge = APIKey(
+                tmp_code=random_tmp,
+                key=key,
+                user_id=user_id
+            )
+            db.session.add(new_badge)
+            db.session.commit()
+            return 'You have successfully registered your badge !'
 
     @staticmethod
     def clear_badge(key, user_id):
@@ -70,3 +77,31 @@ class BadgeController:
         db.session.commit()
 
         return "You've removed your badge"
+
+    @staticmethod
+    def write_json_file(key, user_id):
+        path = './static/data/{key}_{user_id}.json'.format(key=key, user_id=user_id)
+        data = {
+            "key": key,
+            "key_confirmation": "",
+            "user_id": str(user_id),
+            "created_at": strftime("%Y-%m-%d", gmtime())
+        }
+        with open(path, 'w') as f:
+            f.write(json.dumps(data))
+
+        return True if len(data['key_confirmation']) > 0 else False
+
+
+class LogsController:
+
+    @staticmethod
+    def log_event(safe_id, status):
+        new_log = Logs(
+            status=status,
+            created_at=strftime("%Y-%m-%d", gmtime()),
+            safe_id=safe_id
+        )
+        db.session.add(new_log)
+        db.session.commit()
+        return 'ok'

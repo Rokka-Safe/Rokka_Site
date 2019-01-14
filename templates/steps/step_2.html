@@ -7,7 +7,7 @@
                     <div class="separator_left"></div>
                     <p>
                         To enable the use of your device, you need to enter the product key into your settings<br>
-                        Once logged, go to your settings in the side menu<br>
+                        Or you can send it using the form below<br>
                         Then submit, and we'll enable the feature of your Rokka locker !
                     </p>
                 </div>
@@ -15,8 +15,15 @@
                     <img src="{{ url_for('static', filename='images/tuto/product_key.png') }}">
                 </div>
             </div>
-            <br><br><br><br>
-            <br><br>
+            <br><br><br>
+
+            <!--TODO : mettre la bone adresse = route pour requêter sur raspberry -->
+            <form action="{{ url_for('badge') }}" method="POST">
+                <input type="text" placeholder="Enter product key here">
+                <input type="submit" value="Confirm">
+            </form>
+
+            <br><br><br>
             <div class="col-md-12">
                 <a href="/tutorial/0"><div class="col-md-3 step_controller" style="background-color:#4db6ac">1 <span style="font-size:0.5em">Discover</span></div></a>
                 <a href="/tutorial/1"><div class="col-md-3 step_controller" style="background-color:#4db6ac">2 <span style="font-size:0.5em">Register</span></div></a>

@@ -1,6 +1,6 @@
 #!flask/bin/python
 from flask import Flask, request, render_template
-from users.controllers import UserController, BadgeController
+from users.controllers import UserController, BadgeController, LogsController
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from users.models import db
@@ -52,9 +52,6 @@ def me(user_id):
 
 @app.route('/tutorial/<int:step>', methods=['GET'])
 def get_tutorial(step):
-    print('NNNNNNNNNNNNNNNNNSTEPNNNNNNNNNNNNNNNNNNNNNNN')
-    print(step)
-    print('NNNNNNNNNNNNNNNNNSTEPNNNNNNNNNNNNNNNNNNNNNNN')
     return render_template('tutorial.html', step=step)
 
 #
@@ -66,6 +63,13 @@ def get_tutorial(step):
 
 @app.route('/api/badge/<key>/<int:user_id>', methods=['GET', 'DELETE'])
 def badge(key, user_id):
-    # HUUUUUUGE ternary lol
-    return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
+    return "string"
+    # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
 
+
+@app.route('/api/log', methods=["POST"])
+def log_event():
+    data = request.get_json()
+    safe_id = str(data["safe_id"])
+    status = data["status"]
+    return LogsController.log_event(safe_id, status) if request.method == 'POST' else render_template('404')
