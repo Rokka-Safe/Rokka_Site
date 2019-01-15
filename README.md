@@ -12,11 +12,9 @@ sudo apt-get install python-pip
 pip install flask
 git clone https://github.com/Rokka-Safe/Rokka_Site.git
 cd Rokka_Site
-sudo apt-get install pip
 sudo apt-get install python-setuptools
 pip install -r requirements.txt
 export FLASK_ENV=development
-export FLAS_APP=development
 python -m flask run
 ```
 
