@@ -18,6 +18,12 @@ export FLASK_ENV=development
 python -m flask run
 ```
 
+For some people :
+
+```
+export FLASK_APP=app.py
+```
+
 check server at **localhost:5000**
 
 ### Sqlite
