@@ -84,12 +84,13 @@ class BadgeController:
         cur = conn.cursor()
         cur.execute("SELECT id FROM users WHERE id = {id};".format(id=user_id))
         current_user = cur.fetchall()
-        cur.execute("SELECT key, tmp_code FROM api_keys WHERE key = {key};".format(key=d["key"]))
+        cur.execute("SELECT key, tmp_code FROM api_keys WHERE key = '{key}';".format(key=d["key"]))
         current_safe = cur.fetchall()
 
-        if d['key'] == current_safe[0][0] and user_id == current_user[0][0] and d["code"] == current_safe[0][1]:
-            return True
-        else:
+        try:
+            if d['key'] == current_safe[0][0] and user_id == current_user[0][0] and d["code"] == current_safe[0][1]:
+                return True
+        except IndexError:
             return False
 
 
