@@ -2,4 +2,6 @@ requests
 setuptools
 SQLAlchemy
 flask-sqlalchemy
+flask-login
+flask-wtf
 python-dotenv

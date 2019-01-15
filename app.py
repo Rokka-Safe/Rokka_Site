@@ -1,17 +1,30 @@
 #!flask/bin/python
-from flask import Flask, request, render_template
-from users.controllers import UserController, BadgeController, LogsController
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-from users.models import db
 import os
+import json
+import requests
+from dotenv import load_dotenv
+from flask import Flask, render_template, flash, redirect, url_for, request
+from flask_login import current_user, login_user, logout_user, login_required, LoginManager
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.urls import url_parse
+from users.controllers import UserController, BadgeController, LogsController
+from users.forms import LoginForm, RegisterForm, SafeForm, EditProfileForm
+from users.models import db, User, APIKey
 
 load_dotenv()
 
 app = Flask(__name__, static_url_path="/static")
 db.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
+app.config['SECRET_KEY'] = 'rokka'
 db = SQLAlchemy(app)
+login = LoginManager(app)
+login.login_view = 'signin'
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 
 #
 #
@@ -20,15 +33,40 @@ db = SQLAlchemy(app)
 #
 
 
-@app.route('/signin', methods=['POST'])
+@app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    UserController.signin(request.form)
-    return
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        UserController.signin(form)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('home')
+        return redirect(next_page)
+    return render_template('signin.html', title='Sign In', form=form)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegisterForm()
+    if form.validate_on_submit():
+        UserController.create(form)
+        return redirect(url_for('signin'))
+    return render_template('signup.html', title='Register', form=form)
 
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', current_user=current_user)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/user', methods=['POST'])
@@ -49,6 +87,46 @@ def me(user_id):
         except:
             return render_template('404.html')
 
+
+@app.route('/user/<email>/profile/', methods=['GET', 'POST'])
+@login_required
+def user_profile(email):
+    user = User.query.filter_by(email=email).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        UserController.edit(form)
+        return redirect(url_for('user_profile', email=current_user.email))
+    elif request.method == 'GET':
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+    return render_template('profile.html', title='Edit Profile', form=form, user=user)
+
+
+@app.route('/user/<email>/safes')
+@login_required
+def safes(email):
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return redirect(url_for('home'))
+    all_safes = current_user.safes().all()
+    return render_template('my_rokka.html', title='My ROKKA', safes=all_safes)
+
+
+@app.route('/user/add_safe')
+@login_required
+def add_safe():
+    form = SafeForm
+    if form.validate_on_submit():
+        r = requests.post('192.168.1.221:5000/registerBagde/', json.dumps(form), )
+        req_data = r.json()
+        response = req_data['status']
+        if response == 'success':
+            safe = APIKey(name=form.name, tmp_code=BadgeController, key=form.pid, user_id=current_user.id)
+            db.session.add(safe)
+            db.session.commit()
+            flash('Your ROKKA has been saved')
+            return redirect(url_for('home'))
+    return render_template('tutorial_02.html', title='Add ROKKA', form=form)
 
 @app.route('/tutorial/<int:step>', methods=['GET'])
 def get_tutorial(step):

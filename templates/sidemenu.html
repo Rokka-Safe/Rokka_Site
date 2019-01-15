@@ -1,16 +1,16 @@
 <!-- Start Side Menu -->
-{% if 0 == 0 %}
+{% if current_user.is_authenticated %}
 <div class="side">
     <a href="#" class="close-side"><i class="fa fa-times"></i></a>
     <div class="widget">
-        <h6 class="title">Authenticated user</h6>
+        <h6 class="title">{{ current_user }}</h6>
         <ul class="link">
-            <li><a href="#">Profile</a></li>
+            <li><a href="{{ url_for('user_profile', email=current_user.email)}}">Profile</a></li>
             <li><a href="#">Logs</a></li>
-            <li><a href="#">My Rokka</a></li>
+            <li><a href="{{ url_for('safes', email=current_user.email) }}">My Rokka</a></li>
+               <a href="/tutorial/0"><li class="special-link">Get started</li></a>
             <li><a href="#">Clean card</a></li>
-            <a href="/tutorial/0"><li class="special-link">Get started</li></a>
-            <li><a href="#">Log out</a></li>
+            <li><a href="{{ url_for('logout') }}">Log out</a></li>
         </ul>
     </div>
 </div>
@@ -18,9 +18,10 @@
 <div class="side">
     <a href="#" class="close-side"><i class="fa fa-times"></i></a>
     <div class="widget">
-        <h6 class="title">Anonymous</h6>
+        <h6 class="title">Create a account or login</h6>
         <ul class="link">
-            <li><a href="/signup">Sign up</a></li>
+            <li><a href="{{ url_for('signin')}}">Sign in</a>
+            </li><li><a href="{{ url_for('signup')}}">Sign up</a></li>
         </ul>
     </div>
 </div>

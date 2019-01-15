@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
+from flask_login import login_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from time import gmtime, strftime
 from dotenv import load_dotenv
@@ -14,25 +15,27 @@ app = Flask(__name__)
 db.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db"
 db = SQLAlchemy(app)
+app.config['SECRET_KEY'] = 'rokka'
 
 
 class UserController:
 
     @staticmethod
     def signin(req):
-        return req
+        user = User.query.filter_by(email=req.email.data).first()
+        if user is None or not user.check_password(req.password.data):
+            flash('Invalid email or password')
+            return redirect(url_for('signin'))
+        login_user(user, remember=req.remember_me.data)
+        return login_user
 
     @staticmethod
     def create(req):
-        new_user = User(
-            first_name=req["first_name"],
-            last_name=req["last_name"],
-            email=req["email"],
-            password=req["password"]
-        )
-        db.session.add(new_user)
+        user = User(first_name=req.first_name.data, last_name=req.last_name.data, email=req.email.data)
+        user.set_password(req.password.data)
+        db.session.add(user)
         db.session.commit()
-        return 'You have successfully created your account !'
+        flash('User registered')
 
     @staticmethod
     def delete(user_id):
@@ -46,8 +49,18 @@ class UserController:
         current_user = User.query.filter_by(id=user_id).first_or_404()
         return render_template('profile.html', current_user=current_user)
 
+    @staticmethod
+    def edit(req):
+        current_user.first_name = req.first_name.data
+        current_user.last_name = req.last_name.data
+        current_user.set_password(req.password.data)
+        flash('Your changes have been saved')
+
 
 class BadgeController:
+
+    def __init__(self):
+        pass
 
     @staticmethod
     def register_badge(key, user_id):
