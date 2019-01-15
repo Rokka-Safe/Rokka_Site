@@ -4,6 +4,7 @@ from users.controllers import UserController, BadgeController, LogsController
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from users.models import db
+import json
 import os
 
 load_dotenv()
@@ -65,6 +66,13 @@ def get_tutorial(step):
 def badge(key, user_id):
     return "123"
     # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
+
+
+@app.route('/api/badge/check', methods=['POST'])
+def check_badge():
+    data = request.get_json()
+    # TODO: dynamic user_id with current_user
+    return 'success' if BadgeController.authenticate(json.dumps(data), 3) else 'fail'
 
 
 @app.route('/api/log', methods=["POST"])
