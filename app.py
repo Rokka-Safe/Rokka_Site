@@ -144,6 +144,13 @@ def badge(key, user_id):
     # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
 
 
+@app.route('/api/badge/check', methods=['POST'])
+def check_badge():
+    data = request.get_json()
+    # TODO: dynamic user_id with current_user
+    return 'success' if BadgeController.authenticate(json.dumps(data), 3) else 'fail'
+
+
 @app.route('/api/log', methods=["POST"])
 def log_event():
     data = request.get_json()

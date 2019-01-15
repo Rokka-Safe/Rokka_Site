@@ -5,6 +5,7 @@ from time import gmtime, strftime
 from dotenv import load_dotenv
 from sqlalchemy import delete
 from models import User, APIKey, Logs, db
+import sqlite3
 import random
 import json
 import os
@@ -13,7 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 db.init_app(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 db = SQLAlchemy(app)
 app.config['SECRET_KEY'] = 'rokka'
 
@@ -68,6 +69,24 @@ class BadgeController:
         db.session.add(safe)
         db.session.commit()
         flash('Your ROKKA has been saved')
+
+
+    @staticmethod
+    def authenticate(data, user_id):
+        d = json.loads(data)
+        conn = sqlite3.connect("rokka.db")
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM users WHERE id = {id};".format(id=user_id))
+        current_user = cur.fetchall()
+        cur.execute("SELECT key, tmp_code FROM api_keys WHERE key = '{key}';".format(key=d["key"]))
+        current_safe = cur.fetchall()
+
+        try:
+            if d['key'] == current_safe[0][0] and user_id == current_user[0][0] and d["code"] == current_safe[0][1]:
+                return True
+        except IndexError:
+            return False
+
 
     @staticmethod
     def write_json_file(key, user_id):
