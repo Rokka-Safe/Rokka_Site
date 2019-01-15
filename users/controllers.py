@@ -54,9 +54,7 @@ class BadgeController:
         BadgeController.write_json_file(key, user_id)
 
         if BadgeController.write_json_file(key, user_id):
-            random_tmp = str(random.randint(0, 9))
-            for x in range(5):
-                random_tmp += str(random.randint(0, 9))
+            BadgeController.generate_random()
 
             new_badge = APIKey(
                 tmp_code=random_tmp,
@@ -92,6 +90,12 @@ class BadgeController:
 
         return True if len(data['key_confirmation']) > 0 else False
 
+    @staticmethod
+    def generate_random():
+        random_tmp = str(random.randint(0, 9))
+        for x in range(5):
+            random_tmp += str(random.randint(0, 9))
+        return random_tmp
 
 class LogsController:
 
