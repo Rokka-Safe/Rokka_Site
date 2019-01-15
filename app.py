@@ -121,10 +121,7 @@ def add_safe():
         req_data = r.json()
         response = req_data['status']
         if response == 'success':
-            safe = APIKey(name=form.name, tmp_code=BadgeController, key=form.pid, user_id=current_user.id)
-            db.session.add(safe)
-            db.session.commit()
-            flash('Your ROKKA has been saved')
+            BadgeController.register_badge(form)
             return redirect(url_for('home'))
     return render_template('tutorial_02.html', title='Add ROKKA', form=form)
 

@@ -63,31 +63,11 @@ class BadgeController:
         pass
 
     @staticmethod
-    def register_badge(key, user_id):
-        BadgeController.write_json_file(key, user_id)
-
-        if BadgeController.write_json_file(key, user_id):
-            BadgeController.generate_random()
-
-            new_badge = APIKey(
-                tmp_code=random_tmp,
-                key=key,
-                user_id=user_id
-            )
-            db.session.add(new_badge)
-            db.session.commit()
-            return 'You have successfully registered your badge !'
-
-    @staticmethod
-    def clear_badge(key, user_id):
-        current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
-
-        # TODO: introduce double check before removal
-        print(current_badge)
-        db.execute(delete('api_keys').where())
+    def register_badge(req):
+        safe = APIKey(name=req.name, tmp_code=BadgeController.generate_random(), key=req.pid, user_id=current_user.id)
+        db.session.add(safe)
         db.session.commit()
-
-        return "You've removed your badge"
+        flash('Your ROKKA has been saved')
 
     @staticmethod
     def write_json_file(key, user_id):
@@ -109,6 +89,17 @@ class BadgeController:
         for x in range(5):
             random_tmp += str(random.randint(0, 9))
         return random_tmp
+
+
+def clear_badge(key, user_id):
+    current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
+
+    # TODO: introduce double check before removal
+    print(current_badge)
+    db.execute(delete('api_keys').where())
+    db.session.commit()
+
+    return "You've removed your badge"
 
 
 class LogsController:
