@@ -21,16 +21,17 @@ db = SQLAlchemy(app)
 login = LoginManager(app)
 login.login_view = 'signin'
 
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
 
 #
 #
 # Webapp routes
 #
 #
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 @app.route('/signin', methods=['GET', 'POST'])
@@ -124,6 +125,7 @@ def add_safe():
             BadgeController.register_badge(form)
             return redirect(url_for('home'))
     return render_template('tutorial_02.html', title='Add ROKKA', form=form)
+
 
 @app.route('/tutorial/<int:step>', methods=['GET'])
 def get_tutorial(step):
