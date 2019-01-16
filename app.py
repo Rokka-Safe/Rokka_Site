@@ -4,11 +4,20 @@ from users.controllers import UserController, BadgeController, LogsController
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from users.models import db
+from flask_mail import Mail, Message
+
 import os
 
 load_dotenv()
 
 app = Flask(__name__, static_url_path="/static")
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'hamzioui.ricardo@gmail.com'
+app.config['MAIL_PASSWORD'] = 'astABZH381256p'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 db.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
@@ -66,6 +75,12 @@ def badge(key, user_id):
     return "123"
     # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
 
+@app.route('/api/verifyBadge/<key>/<int:user_id>', methods=['GET'])
+def verifyBadge(key, user_id):
+
+    return BadgeController.VerifyBadge(key,user_id)
+    # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
+
 
 @app.route('/api/log', methods=["POST"])
 def log_event():
@@ -73,3 +88,11 @@ def log_event():
     safe_id = str(data["safe_id"])
     status = data["status"]
     return LogsController.log_event(safe_id, status) if request.method == 'POST' else render_template('404')
+
+
+@app.route("/sendemail")
+def index():
+   msg = Message('Hello', sender = 'hamzioui.ricardo@gmail.com', recipients = ['hamzioui.ricardo@gmail.com'])
+   msg.body = "Hello Flask message sent from Flask-Mail"
+   mail.send(msg)
+   return "Sent"

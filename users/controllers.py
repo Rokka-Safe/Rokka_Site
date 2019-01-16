@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from time import gmtime, strftime
 from dotenv import load_dotenv
@@ -96,6 +96,22 @@ class BadgeController:
         for x in range(5):
             random_tmp += str(random.randint(0, 9))
         return random_tmp
+
+    @staticmethod
+    def VerifyBadge(key, user_id):
+        current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first()
+        if current_badge is None:
+            return jsonify(
+                status=False,
+            )
+        else:
+            return jsonify(
+                status=True,
+            )
+        # TODO: introduce double check before removal
+        print(current_badge)
+
+        return current_badge
 
 
 class LogsController:
