@@ -1,4 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+import smtplib
 from flask_login import login_user, current_user
 from models import User, APIKey, Logs, db
 from flask_sqlalchemy import SQLAlchemy
@@ -90,22 +93,28 @@ class BadgeController:
     def reset_code(data):
         d = json.loads(data)
 
-        try:
-            conn = sqlite3.connect("rokka.db")
-            cur = conn.cursor()
-            cur.execute("UPDATE api_keys SET tmp_code='{code}' WHERE key='{key}';".format(
-                code=d["new_code"],
-                key=d["key"]
-            ))
-            cur.fetchall()
-            status = "success"
-            res = 'Code has been changed'
-        except:
-            status = "fail"
-            res = 'Failed to change code'
+        if "new_code" in d:
+            code = d["new_code"]
+        else:
+            code = BadgeController.generate_random()
 
-        LogsController.log_event('success : reset code', key=d["key"]) if status == "success" else LogsController.log_event('success : reset code', key=d["key"])
-        return res
+        conn = sqlite3.connect("rokka.db")
+        cur = conn.cursor()
+        cur.execute("UPDATE api_keys SET tmp_code='{code}' WHERE key='{key}';".format(
+            code=code,
+            key=d["key"]
+        ))
+        cur.fetchall()
+        status = "success"
+
+        if status == "success":
+            LogsController.log_event('success : reset code', key=d["key"])
+        else:
+            LogsController.log_event('fail : reset code', key=d["key"])
+
+        MailerController.send_mail(code, email='dummyuseer@gmail.com')
+
+        return 'Code has been changed'
 
     @staticmethod
     def write_json_file(key, user_id):
@@ -158,4 +167,26 @@ class LogsController:
             )
         db.session.add(new_log)
         db.session.commit()
+        return 'ok'
+
+
+class MailerController:
+
+    @staticmethod
+    def send_mail(code, email='dummyuseerr@gmail.com'):
+        msg = MIMEMultipart()
+        msg['From'] = 'Rokka team'
+        msg['To'] = email
+        msg['Subject'] = 'Your code has been changed'
+        message = 'Your code has been changed ! Here is the new one : {code}'.format(
+            code=code
+        )
+        msg.attach(MIMEText(message))
+        mailserver = smtplib.SMTP('smtp.gmail.com', 587)
+        mailserver.ehlo()
+        mailserver.starttls()
+        mailserver.ehlo()
+        mailserver.login('rokkacontact@gmail.com', os.getenv("GMAIL_PASS"))
+        mailserver.sendmail('rokkacontact@gmail.com', 'dummyuseerr@gmail.com', msg.as_string())
+        mailserver.quit()
         return 'ok'
