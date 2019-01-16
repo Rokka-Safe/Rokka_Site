@@ -72,19 +72,19 @@ class BadgeController:
 
 
     @staticmethod
-    def authenticate(data, user_id):
+    def authenticate(data):
         d = json.loads(data)
         conn = sqlite3.connect("rokka.db")
         cur = conn.cursor()
-        cur.execute("SELECT id FROM users WHERE id = {id};".format(id=user_id))
-        current_user = cur.fetchall()
-        cur.execute("SELECT key, tmp_code FROM api_keys WHERE key = '{key}';".format(key=d["key"]))
+        cur.execute("SELECT key, tmp_code, user_id FROM api_keys WHERE key = '{key}' LIMIT 1;".format(key=d["key"]))
         current_safe = cur.fetchall()
 
         try:
-            if d['key'] == current_safe[0][0] and user_id == current_user[0][0] and d["code"] == current_safe[0][1]:
+            if d['key'] == current_safe[0][0] and current_safe[0][2] >= 0 and str(d["code"]) == str(current_safe[0][1]):
                 return True
         except IndexError:
+            return False
+        except:
             return False
 
 

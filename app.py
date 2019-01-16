@@ -128,6 +128,7 @@ def add_safe():
 
 
 @app.route('/tutorial/<int:step>', methods=['GET'])
+@login_required
 def get_tutorial(step):
     return render_template('tutorial.html', step=step)
 
@@ -147,8 +148,7 @@ def badge(key, user_id):
 @app.route('/api/badge/check', methods=['POST'])
 def check_badge():
     data = request.get_json()
-    # TODO: dynamic user_id with current_user
-    return 'success' if BadgeController.authenticate(json.dumps(data), 3) else 'fail'
+    return 'success' if BadgeController.authenticate(json.dumps(data)) else 'fail'
 
 
 @app.route('/api/log', methods=["POST"])
