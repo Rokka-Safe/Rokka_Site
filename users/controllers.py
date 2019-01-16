@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import login_user, current_user
+from models import User, APIKey, Logs, db
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import delete, update
 from time import gmtime, strftime
 from dotenv import load_dotenv
-from sqlalchemy import delete
-from models import User, APIKey, Logs, db
 import sqlite3
 import random
 import json
@@ -70,7 +70,6 @@ class BadgeController:
         db.session.commit()
         flash('Your ROKKA has been saved')
 
-
     @staticmethod
     def authenticate(data):
         d = json.loads(data)
@@ -87,6 +86,26 @@ class BadgeController:
         except:
             return False
 
+    @staticmethod
+    def reset_code(data):
+        d = json.loads(data)
+
+        try:
+            conn = sqlite3.connect("rokka.db")
+            cur = conn.cursor()
+            cur.execute("UPDATE api_keys SET tmp_code='{code}' WHERE key='{key}';".format(
+                code=d["new_code"],
+                key=d["key"]
+            ))
+            cur.fetchall()
+            status = "success"
+            res = 'Code has been changed'
+        except:
+            status = "fail"
+            res = 'Failed to change code'
+
+        LogsController.log_event('success : reset code', key=d["key"]) if status == "success" else LogsController.log_event('success : reset code', key=d["key"])
+        return res
 
     @staticmethod
     def write_json_file(key, user_id):
@@ -109,27 +128,34 @@ class BadgeController:
             random_tmp += str(random.randint(0, 9))
         return random_tmp
 
+    @staticmethod
+    def clear_badge(key, user_id):
+        current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
 
-def clear_badge(key, user_id):
-    current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
+        # TODO: introduce double check before removal
+        print(current_badge)
+        db.execute(delete('api_keys').where())
+        db.session.commit()
 
-    # TODO: introduce double check before removal
-    print(current_badge)
-    db.execute(delete('api_keys').where())
-    db.session.commit()
-
-    return "You've removed your badge"
+        return "You've removed your badge"
 
 
 class LogsController:
 
     @staticmethod
-    def log_event(safe_id, status):
-        new_log = Logs(
-            status=status,
-            created_at=strftime("%Y-%m-%d", gmtime()),
-            safe_id=safe_id
-        )
+    def log_event(status, key=None, safe_id=None):
+        if safe_id is None:
+            new_log = Logs(
+                status=status,
+                created_at=strftime("%Y-%m-%d", gmtime()),
+                safe_id=key
+            )
+        else:
+            new_log = Logs(
+                status=status,
+                created_at=strftime("%Y-%m-%d", gmtime()),
+                safe_id=safe_id
+            )
         db.session.add(new_log)
         db.session.commit()
         return 'ok'

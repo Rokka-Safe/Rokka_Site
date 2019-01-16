@@ -151,6 +151,12 @@ def check_badge():
     return 'success' if BadgeController.authenticate(json.dumps(data)) else 'fail'
 
 
+@app.route('/api/code/reset', methods=['PUT'])
+def reset_code():
+    data = request.get_json()
+    return BadgeController.reset_code(json.dumps(data))
+
+
 @app.route('/api/log', methods=["POST"])
 def log_event():
     data = request.get_json()
