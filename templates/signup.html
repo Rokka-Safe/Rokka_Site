@@ -1,18 +1,19 @@
+{% extends 'base.html' %}
 {% block content %}
-<div id='modal' class="modal">
-    <section class="modal-content">
+<div>
+    <section>
         <div class="container">
             <div class="row main">
                 <div class="main-login main-center">
                     <form id="signup" class="form-horizontal" method="post" action="">
+                        <h2>Register</h2>
                         {{ form.hidden_tag() }}
                         <div class="form-group">
-                            <span class="close" rel="modal:close">&times;</span>
                             <label class="cols-sm-2 control-label">Your First Name</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    {{ form.first_name(size=32) }}<br>
+                                    {{ form.first_name }}<br>
                                     {% for error in form.first_name.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -21,12 +22,11 @@
                         </div>
 
                         <div class="form-group">
-                            <span class="close" rel="modal:close">&times;</span>
                             <label class="cols-sm-2 control-label">Your Last Name</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    {{ form.last_name(size=32) }}<br>
+                                    {{ form.last_name }}<br>
                                     {% for error in form.last_name.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -39,7 +39,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                    {{ form.email(size=32) }}<br>
+                                    {{ form.email }}<br>
                                     {% for error in form.email.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -52,7 +52,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    {{ form.password(size=32) }}<br>
+                                    {{ form.password }}<br>
                                     {% for error in form.password.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -65,7 +65,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                       {{ form.password2(size=32) }}<br>
+                                       {{ form.password2 }}<br>
                                     {% for error in form.password2.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="form-group ">
-                            <p type="button" class="btn btn-primary btn-lg btn-block login-button">{{ form.submit() }}</p>
+                            <p >{{ form.submit(class="btn btn-primary btn-lg btn-block login-button") }}</p>
                         </div>
                         <div class="login-register">
                             <a href="{{ url_for('signin') }}" rel="modal:open" class="login-link">Login</a>

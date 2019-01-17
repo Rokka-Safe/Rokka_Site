@@ -31,7 +31,10 @@ class UserController:
             flash('Invalid email or password')
             return redirect(url_for('signin'))
         login_user(user, remember=req.remember_me.data)
-        return login_user
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('home')
+        return redirect(next_page)
 
     @staticmethod
     def create(req):
