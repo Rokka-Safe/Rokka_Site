@@ -117,7 +117,7 @@
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a class="navbar-brand" href="#brand">
+                        <a class="navbar-brand" href="{{ url_for('home') }}">
 
                             <img src="{{ url_for('static', filename='images/logo-rokka-min.png') }}" class="logo logo-display" alt="">
                             <img src="{{ url_for('static', filename='images/logo-rokka-min.png') }}" class="logo logo-scrolled" alt="">
@@ -129,9 +129,9 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li><a href="#hello">ROKKA</a></li>
+                            <li><a href="{{ url_for('home') }}">ROKKA</a></li>
                             <li><a href="#about">About</a></li>
-                            <li><a href="#service">Declare a product</a></li>
+                            <li><a href="/tutorial/0">Declare a product</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
