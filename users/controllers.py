@@ -63,9 +63,6 @@ class UserController:
 
 class BadgeController:
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def register_badge(req):
         safe = APIKey(name=req.name, tmp_code=BadgeController.generate_random(), key=req.pid, user_id=current_user.id)
