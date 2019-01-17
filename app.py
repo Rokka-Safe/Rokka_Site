@@ -42,10 +42,6 @@ def signin():
     form = LoginForm()
     if form.validate_on_submit():
         UserController.signin(form)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('home')
-        return redirect(next_page)
     return render_template('signin.html', title='Sign In', form=form)
 
 

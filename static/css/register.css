@@ -110,12 +110,3 @@ input::-webkit-input-placeholder {
     text-decoration: none;
     cursor: pointer;
 }
-#signup, #signin{
-    visibility: hidden;
-}
-#signin.active, #signup.active{
-    visibility: visible;
-}
-.modal.active{
-    visibility: visible;
-}
