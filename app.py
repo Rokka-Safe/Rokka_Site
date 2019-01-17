@@ -145,8 +145,8 @@ def add_safe():
         response = req_data['status']
         if response == 'success':
             BadgeController.register_badge(form)
-            return render_template('tutorial.html', step=3)
-    return render_template('tutorial.html', title='Add ROKKA', form=form, step=2)
+            return render_template('tutorial.html', step=3, submitted=True)
+    return render_template('tutorial.html', title='Add ROKKA', form=form, step=2, submitted=False)
 
 
 @app.route('/api/deleteBadge/<key>/<int:user_id>', methods=['GET'])

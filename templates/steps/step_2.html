@@ -3,7 +3,7 @@
         <div class="about_content">
             <div style="display: flex;">
                 <div class="tuto_content">
-                    <h2>Step two : Link your product key to your account</h2>
+                    <h2>Step three : Link your product key to your account</h2>
                     <div class="separator_left"></div>
                     <p>
                         To enable the use of your device, you need to enter the product key into your settings<br>
@@ -17,13 +17,16 @@
             </div>
             <br><br><br>
 
-            <!--TODO : mettre la bone adresse = route pour requêter sur raspberry -->
+            {% if submitted %}
+            <p>You have registered your safe already</p>
+            {% else %}
             <form action="" method="POST" >
                 {{ form.hidden_tag() }}
                 <div>{{ form.name.label }}<br>{{ form.name }}</div>
                 <div>{{ form.pid.label }}<br>{{ form.pid }}</div>
-                <p class="btn btn-primary btn-lg btn-block login-button">{{ form.submit }}</p>
+                <p class="btn btn-primary  login-button custom-btn-form">{{ form.submit }}</p>
             </form>
+            {% endif %}
 
             <br><br><br>
             <div class="col-md-12">
