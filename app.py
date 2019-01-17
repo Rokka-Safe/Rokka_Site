@@ -41,7 +41,11 @@ def signin():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        UserController.signin(form)
+        res = UserController.signin(form)
+        if not res :
+            flash('Invalid email or password')
+            return redirect(url_for('signin'))
+        return redirect(res)
     return render_template('signin.html', title='Sign In', form=form)
 
 
@@ -108,9 +112,6 @@ def safes(email):
     if user is None:
         return redirect(url_for('home'))
     all_safes = current_user.safes().all()
-    for fuck in all_safes:
-        print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
-        print(fuck)
     return render_template('my_rokka.html', title='My ROKKA', safes=all_safes)
 
 

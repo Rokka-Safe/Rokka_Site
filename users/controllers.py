@@ -28,13 +28,12 @@ class UserController:
     def signin(req):
         user = User.query.filter_by(email=req.email.data).first()
         if user is None or not user.check_password(req.password.data):
-            flash('Invalid email or password')
-            return redirect(url_for('signin'))
+            return False
         login_user(user, remember=req.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home')
-        return redirect(next_page)
+        return next_page
 
     @staticmethod
     def create(req):
