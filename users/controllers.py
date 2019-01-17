@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import smtplib
@@ -69,6 +69,18 @@ class BadgeController:
         db.session.add(safe)
         db.session.commit()
         flash('Your ROKKA has been saved')
+
+    @staticmethod
+    def VerifyBadge(key, user_id):
+        current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first()
+        if current_badge is None:
+            return jsonify(
+                status=False,
+            )
+        else:
+            return jsonify(
+                status=True,
+            )
 
     @staticmethod
     def authenticate(data):

@@ -130,6 +130,11 @@ def get_tutorial(step):
 #
 
 
+@app.route('/api/verifyBadge/<key>/<int:user_id>', methods=['GET'])
+def verifyBadge(key, user_id):
+    return BadgeController.VerifyBadge(key,user_id)
+
+
 @app.route('/user/add_safe', methods=['GET', 'POST'])
 @login_required
 def add_safe():
