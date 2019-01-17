@@ -161,14 +161,20 @@ def check_badge():
     return 'success' if BadgeController.authenticate(json.dumps(data)) else 'fail'
 
 
-@app.route('/api/code/reset', methods=['PUT'])
-def reset_code():
-    data = request.get_json()
-    return BadgeController.reset_code(json.dumps(data))
+@app.route('/api/code/reset/<key>/', methods=['GET'])
+def reset_code(key):
+    safe = APIKey.query.filter_by(key=key).first_or_404()
+    return BadgeController.reset_code(safe)
 
 
-@app.route('/api/log', methods=["POST"])
+@app.route('/api/log', methods=["POST", "GET"])
 def log_event():
+    if request.method == 'GET':
+        # data = current_user.safes().all()
+        # for safe in data:
+        #     obj = APIKey.logs(safe)
+        return render_template('logs.html', logs='prout')
+
     data = request.get_json()
     safe_id = str(data["safe_id"])
     status = data["status"]

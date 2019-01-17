@@ -6,7 +6,7 @@
         <h6 class="title">{{ current_user }}</h6>
         <ul class="link">
             <li><a href="{{ url_for('user_profile', email=current_user.email)}}">Profile</a></li>
-            <li><a href="#">Logs</a></li>
+            <li><a href="/api/log">Logs</a></li>
             <li><a href="{{ url_for('safes', email=current_user.email) }}">My Rokka</a></li>
                <a href="/tutorial/0"><li class="special-link">Get started</li></a>
             <li><a href="#">Clean card</a></li>

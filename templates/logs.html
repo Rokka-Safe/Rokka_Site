@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1>Logs</h1>
+
+    {% for v in logs %}
+    {{ v }}
+
+    {% endfor %}
+
+{% endblock %}

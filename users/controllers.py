@@ -96,6 +96,7 @@ class BadgeController:
 
         try:
             if d['key'] == current_safe[0][0] and current_safe[0][2] >= 0 and str(d["code"]) == str(current_safe[0][1]):
+                LogsController.log_event('success : openned the safe', current_safe[0][0])
                 return True
         except IndexError:
             return False
@@ -103,29 +104,18 @@ class BadgeController:
             return False
 
     @staticmethod
-    def reset_code(data):
-        d = json.loads(data)
+    def reset_code(safe):
+        code = BadgeController.generate_random()
+        safe.tmp_code = code
+        user = User.query.filter_by(id=safe.user_id).first_or_404()
+        db.current_session = db.session.object_session(safe)
+        db.current_session.add(safe)
+        db.current_session.commit()
 
-        if "new_code" in d:
-            code = d["new_code"]
-        else:
-            code = BadgeController.generate_random()
+        MailerController.send_mail(code,  str(safe.name), email=str(user.email))
+        LogsController.log_event('success : reset code', key=safe.key)
 
-        conn = sqlite3.connect("rokka.db")
-        cur = conn.cursor()
-        cur.execute("UPDATE api_keys SET tmp_code='{code}' WHERE key='{key}';".format(
-            code=code,
-            key=d["key"]
-        ))
-        cur.close()
-        status = "success"
-
-        if status == "success":
-            LogsController.log_event('success : reset code', key=d["key"])
-        else:
-            LogsController.log_event('fail : reset code', key=d["key"])
-
-        return 'Code has been changed'
+        return 'Success'
 
     @staticmethod
     def write_json_file(key, user_id):
@@ -147,14 +137,12 @@ class BadgeController:
         for x in range(5):
             random_tmp += str(random.randint(0, 9))
 
-        MailerController.send_mail(random_tmp, email='dummyuseer@gmail.com')
         return random_tmp
 
     @staticmethod
     def clear_badge(key, user_id):
         current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
 
-        # TODO: introduce double check before removal
         current_badge.delete().where(current_badge.key == key)
         db.session.commit()
 
@@ -185,13 +173,14 @@ class LogsController:
 class MailerController:
 
     @staticmethod
-    def send_mail(code, email='dummyuseerr@gmail.com'):
+    def send_mail(code, safe, email='dummyuseerr@gmail.com'):
         msg = MIMEMultipart()
         msg['From'] = 'Rokka team'
         msg['To'] = email
         msg['Subject'] = 'Your code has been changed'
-        message = 'Your code has been changed ! Here is the new one : {code}'.format(
-            code=code
+        message = 'Your code for {safe} has been changed ! Here is the new one : {code}'.format(
+            code=code,
+            safe=safe
         )
         msg.attach(MIMEText(message))
         mailserver = smtplib.SMTP('smtp.gmail.com', 587)

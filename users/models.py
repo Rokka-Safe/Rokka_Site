@@ -70,6 +70,9 @@ class APIKey(db.Model):
     def __repr__(self):
         return "{key}".format(key=self.key)
 
+    def logs(self):
+        return Logs.query.filter_by(safe_id=self.id)
+
 
 class Logs(db.Model):
     __tablename__ = 'logs'
