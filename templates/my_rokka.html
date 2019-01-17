@@ -1,5 +1,15 @@
 {% block content %}
-{% for safe in all_safes %}
-<p>{{safe.name}}</p>
+<a href="" class="btn btn-primary m-top-20">ADD A SAFE</a>
+
+{% for safe in safes %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<div class="rokka_element">
+    <p class="rokka_name">
+        {{safe.name}} :
+        <span style="font-weight: bold; color: #131313;">{{ safe }}</span>
+        <a href="/api/deleteBadge/{{ safe }}/{{ safe.user_id }}"><i class="far fa-trash-alt"></i></a>
+    </p>
+</div>
 {% endfor %}
+
 {% endblock %}

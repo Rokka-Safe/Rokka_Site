@@ -1,6 +1,7 @@
 #!flask/bin/python
 import os
 import json
+import urllib
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, flash, redirect, url_for, request
@@ -106,25 +107,15 @@ def user_profile(email):
 @app.route('/user/<email>/safes')
 @login_required
 def safes(email):
-    user = User.query.filter_by(email=email).first()
+    email_decoded = email.replace('%', '@')
+    user = User.query.filter_by(email=email_decoded).first()
     if user is None:
         return redirect(url_for('home'))
     all_safes = current_user.safes().all()
+    for fuck in all_safes:
+        print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
+        print(fuck)
     return render_template('my_rokka.html', title='My ROKKA', safes=all_safes)
-
-
-@app.route('/user/add_safe')
-@login_required
-def add_safe():
-    form = SafeForm
-    if form.validate_on_submit():
-        r = requests.post('192.168.1.221:5000/registerBagde/', json.dumps(form), )
-        req_data = r.json()
-        response = req_data['status']
-        if response == 'success':
-            BadgeController.register_badge(form)
-            return redirect(url_for('home'))
-    return render_template('tutorial_02.html', title='Add ROKKA', form=form)
 
 
 @app.route('/tutorial/<int:step>', methods=['GET'])
@@ -139,10 +130,28 @@ def get_tutorial(step):
 #
 
 
-@app.route('/api/badge/<key>/<int:user_id>', methods=['GET', 'DELETE'])
-def badge(key, user_id):
-    return "123"
-    # return BadgeController.clear_badge(key, user_id) if request.method == 'DELETE' else BadgeController.register_badge(key, user_id)
+@app.route('/user/add_safe', methods=['GET', 'POST'])
+@login_required
+def add_safe():
+    form = SafeForm()
+    data = {
+        'serverKey': form.pid.data,
+        'user_id': current_user.id
+    }
+    if form.validate_on_submit():
+        headers = {'Content-type': 'application/json'}
+        r = requests.post('http://192.168.1.227:5000/registerBadge', json=data, headers=headers)
+        req_data = r.json()
+        response = req_data['status']
+        if response == 'success':
+            BadgeController.register_badge(form)
+            return render_template('tutorial.html', step=3)
+    return render_template('tutorial.html', title='Add ROKKA', form=form, step=2)
+
+
+@app.route('/api/deleteBadge/<key>/<int:user_id>', methods=['GET'])
+def delete_badge(key, user_id):
+    return BadgeController.clear_badge(key, user_id)
 
 
 @app.route('/api/badge/check', methods=['POST'])

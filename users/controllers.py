@@ -65,7 +65,7 @@ class BadgeController:
 
     @staticmethod
     def register_badge(req):
-        safe = APIKey(name=req.name, tmp_code=BadgeController.generate_random(), key=req.pid, user_id=current_user.id)
+        safe = APIKey(name=req.name.data, tmp_code=BadgeController.generate_random(), key=req.pid.data, user_id=current_user.id)
         db.session.add(safe)
         db.session.commit()
         flash('Your ROKKA has been saved')
@@ -77,6 +77,7 @@ class BadgeController:
         cur = conn.cursor()
         cur.execute("SELECT key, tmp_code, user_id FROM api_keys WHERE key = '{key}' LIMIT 1;".format(key=d["key"]))
         current_safe = cur.fetchall()
+        cur.close()
 
         try:
             if d['key'] == current_safe[0][0] and current_safe[0][2] >= 0 and str(d["code"]) == str(current_safe[0][1]):
@@ -101,15 +102,13 @@ class BadgeController:
             code=code,
             key=d["key"]
         ))
-        cur.fetchall()
+        cur.close()
         status = "success"
 
         if status == "success":
             LogsController.log_event('success : reset code', key=d["key"])
         else:
             LogsController.log_event('fail : reset code', key=d["key"])
-
-        MailerController.send_mail(code, email='dummyuseer@gmail.com')
 
         return 'Code has been changed'
 
@@ -132,6 +131,8 @@ class BadgeController:
         random_tmp = str(random.randint(0, 9))
         for x in range(5):
             random_tmp += str(random.randint(0, 9))
+
+        MailerController.send_mail(random_tmp, email='dummyuseer@gmail.com')
         return random_tmp
 
     @staticmethod
@@ -139,8 +140,7 @@ class BadgeController:
         current_badge = APIKey.query.filter_by(key=key, user_id=user_id).first_or_404()
 
         # TODO: introduce double check before removal
-        print(current_badge)
-        db.execute(delete('api_keys').where())
+        current_badge.delete().where(current_badge.key == key)
         db.session.commit()
 
         return "You've removed your badge"

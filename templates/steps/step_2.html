@@ -18,9 +18,11 @@
             <br><br><br>
 
             <!--TODO : mettre la bone adresse = route pour requêter sur raspberry -->
-            <form action="{{ url_for('badge') }}" method="POST">
-                <input type="text" placeholder="Enter product key here">
-                <input type="submit" value="Confirm">
+            <form action="" method="POST" >
+                {{ form.hidden_tag() }}
+                <div>{{ form.name.label }}<br>{{ form.name }}</div>
+                <div>{{ form.pid.label }}<br>{{ form.pid }}</div>
+                <p class="btn btn-primary btn-lg btn-block login-button">{{ form.submit }}</p>
             </form>
 
             <br><br><br>
