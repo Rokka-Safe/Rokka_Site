@@ -44,16 +44,9 @@ in sqlite console:
 
 *This will output the path to the database*
 
-then in app.py file, add the followings to connect db:
-
-``` python
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/apprenant/Bureau/Rokka_Site/rokka.db'
-db = SQLAlchemy(app)
-
+then in your .env file, add this line to connect db:
+```
+SQLALCHEMY_DATABASE_URI="sqlite:////path/to/your/database.db"
 ```
 
 in python console:
@@ -64,3 +57,4 @@ db.create_all()
 ```
 
 *This will create the tables in your database*
+
